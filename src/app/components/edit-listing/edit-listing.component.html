@@ -1,4 +1,11 @@
-<div class="content-box">
+<div class="content-box" *ngIf="listing !== undefined">
     <h2>Edit Listing</h2>
-    <app-listing-data-form buttonText="Save Changes" (onSubmit)="onSubmit()"></app-listing-data-form>
+    <app-listing-data-form
+        buttonText="Save Changes" 
+        (onSubmit)="onSubmit($event)"
+        [currentName]="listing.name"
+        [currentDescription]="listing.description"
+        [currentPrice]="listing.price.toString()"
+    >
+    </app-listing-data-form>
 </div>

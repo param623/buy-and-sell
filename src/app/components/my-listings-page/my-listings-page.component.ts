@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { fakeMyListings } from '../../fake-data';
 import { Listing } from '../../types';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ListingServiceService } from '../../services/listing-service.service';
 
 @Component({
   selector: 'app-my-listings-page',
@@ -14,13 +14,21 @@ import { RouterModule } from '@angular/router';
 export class MyListingsPageComponent implements OnInit{
 
   listings: Listing[] = [];
-  constructor() {}
+  constructor(
+    private listingService: ListingServiceService
+  ) {}
 
   ngOnInit(): void {
-     this.listings = fakeMyListings;
+     this.listingService.getListingsForUser().subscribe(listings => {
+      this.listings = listings;
+     });
   }
 
   onDeleteClicked(listingId: string): void {
-    alert(`Deleting`)
+    this.listingService.deleteListing(listingId).subscribe(() => {
+      this.listings = this.listings.filter(listing => {
+        listing.id !== listingId
+      });
+    });
   }
 }

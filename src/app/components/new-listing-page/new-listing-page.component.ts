@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ListingDataFormComponent } from '../listing-data-form/listing-data-form.component';
+import { ListingServiceService } from '../../services/listing-service.service';
+import { Listing } from '../../types';
 
 
 @Component({
@@ -15,15 +17,17 @@ import { ListingDataFormComponent } from '../listing-data-form/listing-data-form
 export class NewListingPageComponent implements OnInit{
 
   constructor(
-    private router: Router
+    private router: Router,
+    private listingService: ListingServiceService
   ) {}
 
   ngOnInit(): void {
     
   }
 
-  onSubmit(): void {
-    alert('Creating a new listing.');
-    this.router.navigateByUrl('/my-listings');
+  onSubmit({ name, description, price }: Listing): void {
+    this.listingService.createListing(name, description, price).subscribe(() => {
+      this.router.navigateByUrl('/my-listings');
+    })
   }
 }

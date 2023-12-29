@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Listing } from '../../types';
 import { fakeListings } from '../../fake-data';
 import { FormsModule } from '@angular/forms';
+import { ListingServiceService } from '../../services/listing-service.service';
 
 @Component({
   selector: 'app-contact-page',
@@ -21,7 +22,8 @@ export class ContactPageComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private listingService: ListingServiceService
   ) {}
 
   ngOnInit(): void {
@@ -29,10 +31,10 @@ export class ContactPageComponent implements OnInit{
     const id = this.route.snapshot.paramMap.get('id');
 
     if(id) {
-      this.listing = fakeListings.find(listing => listing.id === id);
-      if(this.listing) {
+      this.listingService.getListingById(id).subscribe( listing => {
+        this.listing = listing;
         this.message = `Hi, I'm interested in your ${this.listing.name.toLocaleLowerCase()}!`;
-      }
+      });
     }
     
   }

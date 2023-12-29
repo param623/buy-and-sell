@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Listing } from '../../types';
-import { fakeListings } from '../../fake-data';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ListingServiceService } from '../../services/listing-service.service';
 
 @Component({
   selector: 'app-listing-page',
@@ -15,12 +15,14 @@ export class ListingPageComponent implements OnInit{
 
   //Declaration of variables
   listings: Listing[] = [];
-  constructor() {
-
-  }
+  constructor(
+    private listingService: ListingServiceService
+  ) { }
 
   ngOnInit(): void {
-    this.listings = fakeListings;
+    this.listingService.getListings().subscribe(listings => {
+      this.listings = listings;
+    });
   }
 
 }

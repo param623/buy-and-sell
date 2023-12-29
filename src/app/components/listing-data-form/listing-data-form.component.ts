@@ -17,10 +17,16 @@ export class ListingDataFormComponent {
 
   @Input() buttonText: string = '';
   @Output() onSubmit = new EventEmitter<Listing>();
+
   listing: Listing | undefined;
+
+  @Input() currentName = '';
+  @Input() currentDescription = '';
+  @Input() currentPrice = '';
+
   name: string = '';
   description: string = '';
-  price: number = 0;
+  price: string = '';
 
   constructor(
     private router: Router,
@@ -28,15 +34,9 @@ export class ListingDataFormComponent {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if(id) {
-      this.listing = fakeMyListings.find(listing => listing.id === id);
-      if(this.listing !== undefined) {
-        this.name = this.listing?.name;
-        this.description = this.listing?.description;
-        this.price = this.listing?.price;
-      }
-    }
+    this.name = this.currentName;
+    this.description = this.currentDescription;
+    this.price = this.currentPrice;
   }
 
   onBtnClicked(): void {
